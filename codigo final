@@ -1,0 +1,90 @@
+from machine import Pin, PWM
+import time
+import socket
+from time import sleep
+
+
+serverAddressPort = socket.getaddrinfo('0.0.0.0', 3000)[0][-1]
+bufferSize  = 128
+from wifiAP import apConfig as connect
+connect("REBAfLOT", "12345678")
+
+
+
+motorA_speed = PWM(Pin(23), freq=1000, duty=1023)  
+motorB_speed = PWM(Pin(27), freq=1000, duty=1023)
+
+
+motorA1 = Pin(22, Pin.OUT)  
+motorA2 = Pin(21, Pin.OUT) 
+motorB1 = Pin(26, Pin.OUT)  
+motorB2 = Pin(25, Pin.OUT)
+
+
+
+def stop_():
+    motorA1.off()
+    motorA2.off()
+    motorB1.off()
+    motorB2.off()
+    
+def adelante ():
+    motorA1.on()
+    motorA2.off()
+    motorB1.on()
+    motorB2.off()
+
+def atras ():
+    motorA1.off()
+    motorA2.on()
+    motorB1.off()
+    motorB2.on()
+    
+def derecha ():
+    motorA1.on()
+    motorA2.off()
+    motorB1.off()
+    motorB2.off()
+
+    
+def izquierda ():
+    motorA1.of()
+    motorA2.off()
+    motorB1.on()
+    motorB2.off()
+
+def exec(data):
+    print(data)
+    if data == b'A':
+        return adelante ()
+    elif data == b'B':
+        return atras ()
+    elif data == b'C':
+        return 
+    elif data == b'D':
+        return derecha ()
+    elif data == b'E':
+        return stop_()
+    elif data == b'M':
+        return
+    elif data == b'N':
+        return
+    elif data == b'O':
+        return 
+    else:
+        return None
+
+
+sk = socket.socket()
+sk.bind(serverAddressPort)
+sk.listen(1)
+print("Listening on: ", serverAddressPort)
+
+while True:
+    conn, addr = sk.accept()
+    while True:
+        data = conn.recv(bufferSize)
+        if data:
+            exec(data)
+            conn.sendall("ok")
+    conn.close()
