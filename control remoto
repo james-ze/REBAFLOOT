@@ -1,0 +1,50 @@
+import time
+import socket
+from time import sleep
+
+
+serverAddressPort = socket.getaddrinfo('0.0.0.0', 3000)[0][-1]
+bufferSize  = 128
+from wifiAP import apConfig as connect
+connect("REBAfLOT", "12345678")
+
+
+def exec(data):
+    print(data)
+    if data == b'A':
+        return adelante ()
+    elif data == b'B':
+        return atras ()
+    elif data == b'C':
+        return 
+    elif data == b'D':
+        return derecha ()
+    elif data == b'E':
+        return stop_()
+    elif data == b'M':
+        return
+    elif data == b'N':
+        return
+    elif data == b'O':
+        return 
+    else:
+        return None
+
+
+sk = socket.socket()
+sk.bind(serverAddressPort)
+sk.listen(1)
+print("Listening on: ", serverAddressPort)
+
+while True:
+    conn, addr = sk.accept()
+    while True:
+        data = conn.recv(bufferSize)
+        if data:
+            exec(data)
+            conn.sendall("ok")
+    conn.close()
+
+
+
+  
