@@ -1,0 +1,46 @@
+from machine import Pin, PWM
+import time
+import socket
+from time import sleep
+
+motorA_speed = PWM(Pin(23), freq=1000, duty=1023)  
+motorB_speed = PWM(Pin(27), freq=1000, duty=1023)
+
+
+motorA1 = Pin(22, Pin.OUT)  
+motorA2 = Pin(21, Pin.OUT) 
+motorB1 = Pin(26, Pin.OUT)  
+motorB2 = Pin(25, Pin.OUT)
+
+
+
+def stop_():
+    motorA1.off()
+    motorA2.off()
+    motorB1.off()
+    motorB2.off()
+    
+def adelante ():
+    motorA1.on()
+    motorA2.off()
+    motorB1.on()
+    motorB2.off()
+
+def atras ():
+    motorA1.off()
+    motorA2.on()
+    motorB1.off()
+    motorB2.on()
+    
+def derecha ():
+    motorA1.on()
+    motorA2.off()
+    motorB1.off()
+    motorB2.off()
+
+    
+def izquierda ():
+    motorA1.of()
+    motorA2.off()
+    motorB1.on()
+    motorB2.off()
